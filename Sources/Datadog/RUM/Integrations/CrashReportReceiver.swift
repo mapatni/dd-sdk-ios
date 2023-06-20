@@ -317,6 +317,11 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
         errorAttributes[DDError.meta] = crashReport.meta
         errorAttributes[DDError.wasTruncated] = crashReport.wasTruncated
 
+        var errorContext: RUMEventAttributes? = nil
+        if let lastRUMViewContext = lastRUMView.context?.contextInfo {
+            errorContext = RUMEventAttributes(contextInfo: lastRUMViewContext)
+        }
+
         let event = RUMErrorEvent(
             dd: .init(
                 browserSdkVersion: nil,
@@ -326,7 +331,7 @@ internal struct CrashReportReceiver: FeatureMessageReceiver {
             application: .init(id: lastRUMView.application.id),
             ciTest: lastRUMView.ciTest,
             connectivity: lastRUMView.connectivity,
-            context: nil,
+            context: errorContext,
             date: crashDate.timeIntervalSince1970.toInt64Milliseconds,
             device: lastRUMView.device,
             display: nil,
