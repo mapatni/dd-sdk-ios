@@ -314,11 +314,9 @@ public class Datadog {
     /// - It completes all pending asynchronous work in each feature.
     ///
     /// This is highly experimental API and only supported in tests.
-#if DD_SDK_COMPILED_FOR_TESTING
     public static func flushAndDeinitialize() {
         internalFlushAndDeinitialize()
     }
-#endif
 
     internal static func internalFlushAndDeinitialize() {
         assert(Datadog.isInitialized, "SDK must be first initialized.")
