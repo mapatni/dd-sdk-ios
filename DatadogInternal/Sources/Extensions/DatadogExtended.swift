@@ -71,3 +71,20 @@ extension DatadogInternalInterface {
         set {}
     }
 }
+
+/// Type that acts as a generic extension point for all `DatadogExtended` types.
+public final class InternalMutationExtension<ExtendedType> {
+    public typealias Mutation = (inout ExtendedType) -> Void
+
+    let mutation: (Mutation) -> Void
+
+    public func mutate(_ block: Mutation) {
+        mutation(block)
+    }
+    /// Create an instance from the provided value.
+    ///
+    /// - Parameter type: Instance being extended.
+    init(_ block: @escaping (Mutation) -> Void) {
+        mutation = block
+    }
+}
